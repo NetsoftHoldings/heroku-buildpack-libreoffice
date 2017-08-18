@@ -197,7 +197,7 @@ rm -rf ${PREFIX}/share/doc
 rm -rf ${PREFIX}/share/info
 rm -rf ${PREFIX}/include
 mkdir ${PREFIX}/bin-good
-POPPLER_BINS="pdftotext pdftoppm pdftohtml pdftocairo"
+POPPLER_BINS="pdftotext pdftoppm pdftohtml pdftocairo pdfunite pdfseparate"
 for x in $POPPLER_BINS; do
     cp ${PREFIX}/bin/$x ${PREFIX}/bin-good/$x
 done
