@@ -23,9 +23,9 @@ AWS_BASE_URL=https://s3.amazonaws.com/static.hubstaff.com/heroku_libreoffice_bui
 
 DEB_DOWNLOAD_URL=$AWS_BASE_URL/LibreOffice_${VERSION}_Linux_x86-64_deb.tar.gz
 GETTEXT_DOWNLOAD_URL="$AWS_BASE_URL/gettext-0.18.3.1.tar.gz"
-#DBUS_DOWNLOAD_URL="$AWS_BASE_URL/dbus-1.6.18.tar.gz"
+DBUS_DOWNLOAD_URL="$AWS_BASE_URL/dbus-1.6.18.tar.gz"
 LIBFFI_DOWNLOAD_URL="$AWS_BASE_URL/libffi-3.0.13.tar.gz"
-#GLIB_DOWNLOAD_URL="$AWS_BASE_URL/glib-2.38.2.tar.xz"
+GLIB_DOWNLOAD_URL="$AWS_BASE_URL/glib-2.38.2.tar.xz"
 DBUS_GLIB_DOWNLOAD_URL="$AWS_BASE_URL/dbus-glib-0.100.2.tar.gz"
 FLEX_DOWNLOAD_URL="$AWS_BASE_URL/flex-2.5.39.tar.xz"
 MESA_DOWNLOAD_URL="$AWS_BASE_URL/mesa-11.0.9.tar.xz"
@@ -98,14 +98,14 @@ export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Download and build DBus
-#curl -L ${DBUS_DOWNLOAD_URL} -o dbus.tar.gz
-#archive_name=$(tar tzf dbus.tar.gz | sed -e 's@/.*@@' | uniq)
-#tar xzf dbus.tar.gz
-#cd ${archive_name}
-#./configure --prefix=${PREFIX}
-#make ${MAKE_OPTS}
-#make install -k
-#cd ${temp_dir}
+curl -L ${DBUS_DOWNLOAD_URL} -o dbus.tar.gz
+archive_name=$(tar tzf dbus.tar.gz | sed -e 's@/.*@@' | uniq)
+tar xzf dbus.tar.gz
+cd ${archive_name}
+./configure --prefix=${PREFIX}
+make ${MAKE_OPTS}
+make install -k
+cd ${temp_dir}
 
 # Download and build libffi
 curl -L ${LIBFFI_DOWNLOAD_URL} -o libffi.tar.gz
@@ -118,14 +118,14 @@ make install
 cd ${temp_dir}
 
 # Download and build GLib
-#curl -L ${GLIB_DOWNLOAD_URL} -o glib.tar.xz
-#archive_name=$(tar tJf glib.tar.xz | sed -e 's@/.*@@' | uniq)
-#tar xJf glib.tar.xz
-#cd ${archive_name}
-#./configure --prefix=${PREFIX}
-#make ${MAKE_OPTS}
-#make install
-#cd ${temp_dir}
+curl -L ${GLIB_DOWNLOAD_URL} -o glib.tar.xz
+archive_name=$(tar tJf glib.tar.xz | sed -e 's@/.*@@' | uniq)
+tar xJf glib.tar.xz
+cd ${archive_name}
+./configure --prefix=${PREFIX}
+make ${MAKE_OPTS}
+make install
+cd ${temp_dir}
 
 # Download and build DBus-GLib
 curl -L ${DBUS_GLIB_DOWNLOAD_URL} -o dbus-glib.tar.gz
@@ -216,7 +216,8 @@ rm -rf ${PREFIX}/include
 mkdir ${PREFIX}/bin-good
 POPPLER_BINS="pdftotext pdftoppm pdftohtml pdftocairo pdfunite pdfseparate"
 for x in $POPPLER_BINS; do
-    cp ${PREFIX}/bin/$x ${PREFIX}/bin-good/$x
+  cp ${PREFIX}/bin/$x ${PREFIX}/bin-good/$x
+  ln -s /app/vendor/libreoffice/deps/bin/$x /bin/$x
 done
 rm -rf ${PREFIX}/bin
 mv ${PREFIX}/bin-good ${PREFIX}/bin
